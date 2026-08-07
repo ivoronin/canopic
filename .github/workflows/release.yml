@@ -1,0 +1,19 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    uses: ivoronin/github-workflows/.github/workflows/release.yml@76183932eefa341c192f758f7ef8d7ce0d948b46 # main
+    with:
+      language: python
+      brew: false
+    secrets:
+      UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}

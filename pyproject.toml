@@ -1,0 +1,40 @@
+[project]
+name = "canopic"
+dynamic = ["version"]
+description = "Password-derived asymmetric encryption to a self-extracting archive"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "ISC"
+authors = [{ name = "Ilya Voronin", email = "ivoronin@octalwave.com" }]
+dependencies = []
+
+[project.scripts]
+canopic = "canopic.cli:main"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+# Version is the git tag (CalVer vYYYY.0M.0D); PEP 440 normalizes it for the package.
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+# Before the first tag (or in a shallow checkout without history).
+fallback_version = "0.0.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/canopic"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.16.2",
+]

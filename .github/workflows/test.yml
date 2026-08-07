@@ -1,0 +1,14 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    uses: ivoronin/github-workflows/.github/workflows/test.yml@76183932eefa341c192f758f7ef8d7ce0d948b46 # main
+    with:
+      language: python
