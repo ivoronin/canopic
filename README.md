@@ -7,7 +7,7 @@ Password-derived asymmetric encryption to a self-extracting archive.
 
 ## Table of Contents
 
-[Overview](#overview) · [Features](#features) · [Installation](#installation) · [Usage](#usage) · [Requirements](#requirements) · [Risks](#risks) · [License](#license)
+[Overview](#overview) · [Archive Format](#archive-format) · [Features](#features) · [Installation](#installation) · [Usage](#usage) · [Requirements](#requirements) · [Risks](#risks) · [License](#license)
 
 ```bash
 canopic genkey -o key.json                                    # passphrase -> public key.json
@@ -26,6 +26,17 @@ ciphertext + KDF params + a stdlib-only decryptor as `__main__.py`.
 Decrypt re-derives the identity from the passphrase and runs `age -d`. Same decryptor code
 for both paths (embedded self-extractor, installed `canopic decrypt`). Secrets reach `age`
 only via an inherited fd, never argv/env/disk; passphrase read from tty.
+
+## Archive Format
+
+A `.pyz` is a Python zip application: a regular ZIP file prefixed with a `python3`
+shebang. Python executes its `__main__.py`; ZIP tools still read it as an archive. A
+canopic `.pyz` contains the decryptor, `manifest.json` with the salt and scrypt parameters,
+and the age ciphertext as `payload.age`. It contains no passphrase or private key.
+
+```bash
+unzip -l backup.pyz
+```
 
 ## Features
 
