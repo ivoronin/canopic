@@ -31,7 +31,7 @@ only via an inherited fd, never argv/env/disk; passphrase read from tty.
 
 - Encrypt needs only public `key.json`; decrypt needs the passphrase.
 - No private key file: identity re-derived from passphrase on demand.
-- `.pyz` decrypts with `python3` + `age`, no canopic install.
+- `.pyz` decrypts with `python3` providing `hashlib.scrypt` + `age`, no canopic install.
 - Two decrypt paths, one code copy: run the archive, or `canopic decrypt` (does not execute embedded code).
 - scrypt N=2^20, r=8 (~1 GiB per guess).
 - age (X25519); added crypto is scrypt KDF wiring + bech32 encoding.
@@ -63,7 +63,10 @@ canopic decrypt secret.pyz > secret.txt
 ## Requirements
 
 - `age`, `age-keygen` on `PATH` (`age-keygen` only for `genkey`).
-- Python 3.9+ for `canopic`; self-extractor needs only `python3` + `age`.
+- Python 3.9+; `genkey` and decrypt require `hashlib.scrypt`. LibreSSL-backed Python
+  builds may omit it: encryption with an existing `key.json` works, key derivation and
+  decryption do not.
+- Self-extractor needs `python3` providing `hashlib.scrypt` + `age`.
 - ~1 GiB free memory to derive the key.
 
 ## Risks
